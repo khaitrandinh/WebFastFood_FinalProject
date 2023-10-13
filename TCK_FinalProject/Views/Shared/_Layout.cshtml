@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="@Url.Action("Index", "Food", new { area = "" })" class="navbar-brand">
+                    <img src="~/Content/Images/logo/logo.png" alt="Logo" class="logo-image" height="45px" width="45px" style="position:relative ;top: -10px" />
+                </a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Food")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    @{
+                        string nav = ViewContext.RouteData.Values["controller"] as string;
+                        // Lấy tên của controller từ RouteData. Trong MVC, RouteData là dữ liệu liên quan đến đường dẫn của yêu cầu hiện tại,
+                        // và "controller" là một trong các giá trị có thể xuất hiện trong RouteData.
+                    }
+                    @if (Session["Admin"] != null && nav.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+                    {
+                        <li>@Html.ActionLink("Statistic-Mem", "StatisticMember", "Admin")</li>
+                        <li>@Html.ActionLink("Logout", "AdminLogout", "Admin")</li>
+                    }
+                    else
+                    {
+                        if (Session["User"] != null)
+                        {
+                            <li>@Html.ActionLink("Statistic", "Statistic", "Food")</li>
+                            <li>@Html.ActionLink("Logout", "Logout", "User")</li>
+                        }
+                        else
+                        {
+                            <li>@Html.ActionLink("Register", "Register", "User")</li>
+                            <li>@Html.ActionLink("Login", "Login", "User")</li>
+                        }
+                    }
+                </ul>
+                @{
+                    string admin = ViewContext.RouteData.Values["controller"] as string;
+                    // Lấy tên của controller từ RouteData. Trong MVC, RouteData là dữ liệu liên quan đến đường dẫn của yêu cầu hiện tại,
+                    // và "controller" là một trong các giá trị có thể xuất hiện trong RouteData.
+                }
+                @if (Session["Admin"] != null && admin.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+                {
+                    // Kiểm tra xem người dùng hiện tại có phải là Admin hay không.
+                    // Nếu có, và đang ở trang quản trị (Admin controller), thì sẽ hiển thị biểu mẫu tìm kiếm cho Admin.
+                    using (Html.BeginForm("AdminDashboard", "Admin", FormMethod.Get, new { @class = "form-inline" }))
+                    {
+                        // Bắt đầu một form HTML sử dụng helper Html.BeginForm trong Razor. Form này sẽ gửi dữ liệu đến hành động "AdminDashboard" trong controller "Admin",
+                        // và sử dụng phương thức GET. Form này có class là "form-inline" để tạo một giao diện ngang
+                        <div class="btn-group" style="display: flex; left:10%; top: 10px">
+                            <input type="text" class="form-control col-md-10" value="@ViewBag.keyword" name="searchString" placeholder="Enter food name...." />
+                            <input type="submit" class="btn btn-info" value="Search" />
+                        </div>
+                        // search của admin
+                    }
+                }
+                // (tk user chưa hoặc đã đăng nhập) và ko ở trang admin
+                else if ((Session["User"] != null || Session["User"] == null) && !admin.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+                {
+                    using (Html.BeginForm("Index", "Food", FormMethod.Get, new { @class = "form-inline" }))
+                    {
+                        <div class="btn-group" style="display: flex; left:10%; top: 10px">
+                            <input type="text" class="form-control col-md-10" value="@ViewBag.keyword" name="searchString" placeholder="Enter food name..." />
+                            <input type="submit" class="btn btn-info" value="Search" />
+                        </div>
+                        // search của khách hàng
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - TCK TEAM Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    @RenderSection("upload", required: false)
+</body>
+</html>

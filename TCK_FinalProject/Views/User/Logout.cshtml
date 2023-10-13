@@ -1,0 +1,15 @@
+﻿@model TCK_FinalProject.Models.customer
+
+@{
+    ViewBag.Title = "Logout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Logout</h2>
+
+<p>Are you sure you want to logout?</p>
+
+@using (Html.BeginForm("Logout", "User", FormMethod.Post))
+{
+    <input type="submit" value="Logout" />
+}

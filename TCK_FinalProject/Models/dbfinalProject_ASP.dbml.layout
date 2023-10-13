@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="dbfinalProject_ASP">
+  <DataContextMoniker Name="/dbfinalProject_ASPDataContext" />
+  <nestedChildShapes>
+    <classShape Id="b42cb8ab-0388-44af-abcf-6be2dfc76fcb" absoluteBounds="0.75, 1.125, 2, 1.7708968098958329">
+      <DataClassMoniker Name="/dbfinalProject_ASPDataContext/admin" />
+      <nestedChildShapes>
+        <elementListCompartment Id="9d8161e3-d454-4ccc-83d4-27a10eefa05a" absoluteBounds="0.765, 1.585, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="299a28f7-cf57-4bcf-92fe-d9df7393dbbb" absoluteBounds="3.5, 0.875, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/dbfinalProject_ASPDataContext/order" />
+      <nestedChildShapes>
+        <elementListCompartment Id="ddc74b86-0cd6-4f06-8b6a-f950b61a05ea" absoluteBounds="3.515, 1.335, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="84c7b183-6ece-40b3-91ef-de616fd43b55" absoluteBounds="0.75, 4.875, 2, 2.3478011067708326">
+      <DataClassMoniker Name="/dbfinalProject_ASPDataContext/customer" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2dc3ceaf-f6aa-4e32-af0e-78d65cec64a6" absoluteBounds="0.765, 5.335, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="8a3471e2-38e1-4ec4-a84a-567ad18729a9" absoluteBounds="6.25, 1.25, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/dbfinalProject_ASPDataContext/orderdetail" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6dbd70e2-2961-4a22-b7e8-d0941d6918c0" absoluteBounds="6.265, 1.71, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.75 : 2.01044840494792); (3.5 : 2.01044840494792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/dbfinalProject_ASPDataContext/admin/admin_order" />
+      <nodes>
+        <classShapeMoniker Id="b42cb8ab-0388-44af-abcf-6be2dfc76fcb" />
+        <classShapeMoniker Id="299a28f7-cf57-4bcf-92fe-d9df7393dbbb" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 6.04890055338542); (4.46875 : 6.04890055338542); (4.46875 : 3.03049967447917)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/dbfinalProject_ASPDataContext/customer/customer_order" />
+      <nodes>
+        <classShapeMoniker Id="84c7b183-6ece-40b3-91ef-de616fd43b55" />
+        <classShapeMoniker Id="299a28f7-cf57-4bcf-92fe-d9df7393dbbb" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 2.03929768880208); (6.25 : 2.03929768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/dbfinalProject_ASPDataContext/order/order_orderdetail" />
+      <nodes>
+        <classShapeMoniker Id="299a28f7-cf57-4bcf-92fe-d9df7393dbbb" />
+        <classShapeMoniker Id="8a3471e2-38e1-4ec4-a84a-567ad18729a9" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="64db61c6-6e7a-402e-95f3-90ed599a3acd" absoluteBounds="5.5, 5.25, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/dbfinalProject_ASPDataContext/food" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e95eca1d-788c-4af0-8016-fe3a79d5736d" absoluteBounds="5.515, 5.71, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(6.875 : 5.25); (6.875 : 2.82859537760417)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/dbfinalProject_ASPDataContext/food/food_orderdetail" />
+      <nodes>
+        <classShapeMoniker Id="64db61c6-6e7a-402e-95f3-90ed599a3acd" />
+        <classShapeMoniker Id="8a3471e2-38e1-4ec4-a84a-567ad18729a9" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>
