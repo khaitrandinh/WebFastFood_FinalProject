@@ -1,0 +1,47 @@
+﻿<!-- Views/Order/OrderDetail.cshtml -->
+@model TCK_FinalProject.Controllers.OrderController.OrderDetailViewModel
+
+@{
+    ViewBag.Title = "OrderDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Order Details - ID: @Model.OrderId</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Food Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.OrderDetails != null && Model.OrderDetails.Any())
+        {
+            var i = 1;
+
+            foreach (var item in Model.OrderDetails)
+            {
+                <tr>
+                    <td>@i</td>
+                    <td>@item.foodName</td>
+                    <td>@item.quantity</td>
+                    <td>@item.price</td>
+                    <td>@item.totalAmount</td>
+                </tr>
+                i++;
+            }
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><strong>Total Price of this Order:</strong></td>
+                <td>@Model.TotalAmount</td>
+            </tr>
+        }
+    </tbody>
+</table>

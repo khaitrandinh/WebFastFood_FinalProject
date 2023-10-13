@@ -1,0 +1,109 @@
+﻿@model PagedList.IPagedList<TCK_FinalProject.Models.food>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Session["User"] != null)
+{
+    <h3 style="color:black">Welcome, @(((TCK_FinalProject.Models.customer)Session["User"]).customer_name)!</h3>
+}
+<div class="row">
+
+    @foreach (var item in Model)
+    {
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel panel-heading">
+                    @item.food_name
+                </div>
+                <div class="panel-body">
+                    <p><strong>Price: </strong>@item.price.000đ </p>
+                    @if (item.quantity_instock == 0)
+                    {
+                        <p><strong>Quantity in stock: </strong><b>Out of stock</b></p>
+                    }
+                    else
+                    {
+                        <p><strong>Quantity in stock: </strong>@item.quantity_instock </p>
+                    }
+                    <a href="@Url.Action("Detail", "Food", new { id = item.food_id })">
+                        <img src="@item.image" width="95%" alt="image picture" />
+                    </a>
+                </div>
+
+                <div class="panel-footer clearfix">
+                    <div class="pull-right">
+                        <a class="btn btn-success" href="@Url.Action("AddCart", "Cart",new { @id = item.food_id, @strURL = Request.Url.ToString()})">Order</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+<div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
+    @using (Html.BeginForm("Index", "Food", FormMethod.Get))
+    {
+        <p>
+            Size of page:@Html.DropDownList("size", (List<SelectListItem>)ViewBag.size, new
+{
+@onchange = "this.form.submit();"
+})
+        </p>
+    }
+</div>
+<div class="col-md-6 col-lg-6 col-xs-6 col-sm-6 text-right">
+    Page: @(Model.PageCount<Model.PageNumber? 0:Model.PageNumber)/@Model.PageCount
+</div>
+<div>
+    <div class="Menu">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, size = ViewBag.currentSize }))
+    </div>
+</div>
+
+<style>
+    .Menu li {
+        display: inline;
+    }
+
+    </h3style >
+    <style type="text/css" >
+    #mau-nut a {
+        clear: both;
+        background-color: orange;
+        color: snow;
+    }
+
+    #mau-nut a:hover {
+        background-color: darkcyan;
+        color: darkcyan;
+    }
+</style>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var maxLength = 100;
+        $(".show-read-more").each(function () {
+            var myStr = $(this).text();
+            if ($.trim(myStr).length > maxLength) {
+                var newStr = myStr.substring(0, maxLength);
+                var removeStr = myStr.substring(maxLength, $.trim(myStr).length);
+                $(this).empty().html(newStr);
+                $(this).append(' <a href= "javascript:void(0);" class="read-more">read continue...</a>');
+                $(this).append('<span class="more-text">' + removedStr + '</span>');
+            }
+        });
+        $(".read-more").click(function () {
+            $(this).siblings(".more-text").contents().unwrap();
+            $(this).remove();
+        });
+    });
+</script>
+<style>
+    .show-read-more .more-text {
+        display: none;
+    }
+</style>
+

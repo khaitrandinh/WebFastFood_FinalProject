@@ -1,0 +1,32 @@
+﻿@model IEnumerable<TCK_FinalProject.Models.StatisticViewModel>
+
+
+@{
+    ViewBag.Title = "Statistic";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Statistic of Sale Book Quantity</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Food Name
+        </th>
+        <th>
+            Sale Quantity
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.BookTitle
+            </td>
+            <td>
+                @item.TotalQuantity
+            </td>
+        </tr>
+    }
+</table>

@@ -1,0 +1,52 @@
+﻿@model IEnumerable<TCK_FinalProject.Models.StatisticMemberview>
+
+@{
+    ViewBag.Title = "StatisticMember";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Statistic Member of Sale Book Quantity</h2>
+@using (Html.BeginForm("StatisticMember", "Admin", FormMethod.Get, new { @class = "form-inline" }))
+{
+    <div class="btn-group" style="display: flex; top: -5px">
+        <input type="text" class="form-control col-md-10" value="@ViewBag.keyword_cus" name="searchString" placeholder="Enter Food Name..." />
+        <input type="submit" class="btn btn-info" value="Search" />
+    </div>
+}
+<table class="table">
+    <tr>
+        <th>
+            Customer Name
+        </th>
+        <th>
+            Food Name
+        </th>
+        <th class="text-center">
+            Sale Quantity
+        </th>
+        <th class="text-center">
+            Total Price
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.CustomerName
+            </td>
+            <td>
+                @item.FoodName
+            </td>
+            <td class="text-center">
+                @item.TotalQuantity.ToString()
+            </td>
+            <td class="text-center">
+                @item.Totalprice.ToString()<span>.000đ</span>
+            </td>
+        </tr>
+    }
+</table>
+<p>
+    @Html.ActionLink("Home", "AdminDashboard", "Admin", new { @class = "btn btn-info" })
+</p>

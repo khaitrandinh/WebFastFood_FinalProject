@@ -1,0 +1,69 @@
+﻿@model TCK_FinalProject.Models.food
+
+@{
+    ViewBag.Title = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Detail</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.food_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.food_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.image)
+        </dt>
+
+        <dd>
+            <img src="@Html.DisplayFor(model => model.image)" style="height: 400px; width: 500px; margin-right: 5px" />
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.price)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.update_date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.update_date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.quantity_instock)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.quantity_instock)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.info)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.info)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index", new { id = "" }, new { @class = "btn btn-info" }) |
+    @Html.ActionLink("Order", "AddCart", "Cart", new { id = Model.food_id, strURL = Request.Url.ToString() }, new { @class = "btn btn-success" })
+    <!--Html.ActionLink("Delete", "Delete", new { id = Model.Book_id }, new { class = "btn btn-danger" })
+    Html.ActionLink("Edit", "Edit", new { id = Model.Book_id }, new { class = "btn btn-primary" }) | -->
+</p>
