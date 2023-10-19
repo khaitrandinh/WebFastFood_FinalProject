@@ -1,13 +1,62 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="finalProject_ASP" Class="dbfinalProject_ASPDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=DESKTOP-OFQ19U6\SQL_NHT;Initial Catalog=finalProject_ASP;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="finalProject_ASPConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="WebSettings" ConnectionString="Data Source=JamesTran\SQLEXPRESS;Initial Catalog=finalProject_ASP;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="finalProject_ASPConnectionString1" Provider="System.Data.SqlClient" />
   <Table Name="dbo.admins" Member="admins">
     <Type Name="admin">
       <Column Name="admin_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="admin_name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="admin_username" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
-      <Column Name="admin_password" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="admin_password" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
       <Column Name="admin_email" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
       <Association Name="admin_order" Member="orders" ThisKey="admin_id" OtherKey="admin_id" Type="order" />
+    </Type>
+  </Table>
+  <Table Name="dbo.reviews" Member="reviews">
+    <Type Name="review">
+      <Column Name="review_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="food_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="customer_id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="rating" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="comment" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="review_date" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="customer_review" Member="customer" ThisKey="customer_id" OtherKey="customer_id" Type="customer" IsForeignKey="true" />
+      <Association Name="food_review" Member="food" ThisKey="food_id" OtherKey="food_id" Type="food" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.customers" Member="customers">
+    <Type Name="customer">
+      <Column Name="customer_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="customer_name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="username" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="password" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="email" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="address" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="numberphone" Type="System.String" DbType="VarChar(12)" CanBeNull="true" />
+      <Column Name="dob" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Association Name="customer_review" Member="reviews" ThisKey="customer_id" OtherKey="customer_id" Type="review" />
+      <Association Name="customer_order" Member="orders" ThisKey="customer_id" OtherKey="customer_id" Type="order" />
+    </Type>
+  </Table>
+  <Table Name="dbo.foods" Member="foods">
+    <Type Name="food">
+      <Column Name="food_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="food_name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="image" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="price" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="update_date" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="quantity_instock" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="info" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Association Name="food_review" Member="reviews" ThisKey="food_id" OtherKey="food_id" Type="review" />
+      <Association Name="food_orderdetail" Member="orderdetails" ThisKey="food_id" OtherKey="food_id" Type="orderdetail" />
+    </Type>
+  </Table>
+  <Table Name="dbo.orderdetails" Member="orderdetails">
+    <Type Name="orderdetail">
+      <Column Name="order_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="food_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="quantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="price" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Association Name="food_orderdetail" Member="food" ThisKey="food_id" OtherKey="food_id" Type="food" IsForeignKey="true" />
+      <Association Name="order_orderdetail" Member="order" ThisKey="order_id" OtherKey="order_id" Type="order" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.orders" Member="orders">
@@ -22,41 +71,6 @@
       <Association Name="order_orderdetail" Member="orderdetails" ThisKey="order_id" OtherKey="order_id" Type="orderdetail" />
       <Association Name="admin_order" Member="admin" ThisKey="admin_id" OtherKey="admin_id" Type="admin" IsForeignKey="true" />
       <Association Name="customer_order" Member="customer" ThisKey="customer_id" OtherKey="customer_id" Type="customer" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.customers" Member="customers">
-    <Type Name="customer">
-      <Column Name="customer_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="customer_name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="username" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
-      <Column Name="password" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
-      <Column Name="email" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
-      <Column Name="address" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="numberphone" Type="System.String" DbType="VarChar(12)" CanBeNull="true" />
-      <Column Name="dob" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
-      <Association Name="customer_order" Member="orders" ThisKey="customer_id" OtherKey="customer_id" Type="order" />
-    </Type>
-  </Table>
-  <Table Name="dbo.orderdetails" Member="orderdetails">
-    <Type Name="orderdetail">
-      <Column Name="order_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="food_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="quantity" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="price" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
-      <Association Name="order_orderdetail" Member="order" ThisKey="order_id" OtherKey="order_id" Type="order" IsForeignKey="true" />
-      <Association Name="food_orderdetail" Member="food" ThisKey="food_id" OtherKey="food_id" Type="food" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.foods" Member="foods">
-    <Type Name="food">
-      <Column Name="food_id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="food_name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="image" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="price" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
-      <Column Name="update_date" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
-      <Column Name="quantity_instock" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="info" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Association Name="food_orderdetail" Member="orderdetails" ThisKey="food_id" OtherKey="food_id" Type="orderdetail" />
     </Type>
   </Table>
 </Database>

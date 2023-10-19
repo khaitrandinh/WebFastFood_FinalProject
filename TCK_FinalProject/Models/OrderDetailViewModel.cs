@@ -5,9 +5,8 @@ using System.Web;
 
 namespace TCK_FinalProject.Models
 {
-    public class StatisticViewModel
+    public class OrderDetailViewModel
     {
-        public string FoodName { get; set; }
-        public int TotalQuantity { get; set; }
+        public List<OrderItem> Orders { get; set; }
     }
 }

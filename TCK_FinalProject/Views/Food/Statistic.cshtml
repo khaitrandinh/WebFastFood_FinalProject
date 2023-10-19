@@ -1,0 +1,45 @@
+﻿@model IEnumerable<TCK_FinalProject.Models.StatisticViewModel>
+
+@{
+    ViewBag.Title = "Statistic";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Statistic of Sale Food Quantity</h2>
+    @using (Html.BeginForm("Statistic", "Food", FormMethod.Get, new { @class = "form-inline" }))
+    {
+        <div class="btn-group" style="display: flex; top: -5px">
+            <input type="text" class="form-control col-md-10" value="@ViewBag.food" name="foodName" placeholder="Enter Food Name..." />
+            <input type="submit" class="btn btn-info" value="Search" />
+        </div>
+    }
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Food Name</th>
+                    <th scope="col">Sale Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.FoodName</td>
+                        <td>@item.TotalQuantity</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!--container để đảm bảo rằng nội dung nằm trong một khu vực giới hạn và trung tâm trên màn hình
+    mt-5 và mb-4 là margin top và margin bottom, giúp tạo ra khoảng cách giữa tiêu đề và bảng.
+    table và table-striped class từ Bootstrap giúp tạo ra một bảng với đường viền và dòng xen kẽ màu sáng.
+    thead và tbody giúp phân biệt giữa phần tiêu đề và phần nội dung của bảng.
+    Header của bảng có màu đen (thead-dark) để tạo sự tương phản và dễ đọc hơn.
+     Thuộc tính scope="col" này chỉ định rằng nội dung trong cột đó là dữ liệu tiêu đề của cột.
+    -->

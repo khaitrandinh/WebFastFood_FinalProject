@@ -1,0 +1,49 @@
+﻿@model TCK_FinalProject.Models.OrderItem
+@{
+    ViewBag.Title = "Order Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2>Order Detail</h2>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Food Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.OrderDetails != null && Model.OrderDetails.Any())
+                    {
+                        foreach (var detail in Model.OrderDetails)
+                        {
+                            <tr>
+                                <td>@detail.FoodName</td>
+                                <td>@detail.Quantity</td>
+                                <td>@string.Format("{0:N0}", detail.Price)<span> VND</span></td>
+                                <td>@string.Format("{0:N0}", detail.TotalAmount)<span> VND</span></td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <div>
+                <p><strong>Order ID:</strong> @Model.OrderID</p>
+                <p><strong>Customer Name:</strong> @Model.CustomerName</p>
+                <p><strong>Order Date:</strong> @Model.OrderDate.ToShortDateString()</p>
+                <p><strong>Delivery Date:</strong> @Model.DeliveryDate.ToShortDateString()</p>
+                <p><strong>Is Ship:</strong> @(Model.IsShip ? "True" : "False")</p>
+                <p><strong>Is Payment:</strong> @(Model.IsPayment ? "True" : "False")</p>
+                <p><strong>Total payment:</strong> @string.Format("{0:N0}", Model.Total)<span> VND</span></p>
+            </div>
+        </div>
+    </div>
+</div>

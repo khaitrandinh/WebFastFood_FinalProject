@@ -7,102 +7,136 @@
 
 @if (Session["User"] != null)
 {
-    <h3 style="color:black">Welcome, @(((TCK_FinalProject.Models.customer)Session["User"]).customer_name)!</h3>
+    <h3 class="text-center">Welcome, @(((TCK_FinalProject.Models.customer)Session["User"]).customer_name)!</h3>
 }
-<div class="row">
 
-    @foreach (var item in Model)
-    {
-        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-            <div class="panel panel-default">
-                <div class="panel panel-heading">
-                    @item.food_name
-                </div>
-                <div class="panel-body">
-                    <p><strong>Price: </strong>@item.price.000đ </p>
-                    @if (item.quantity_instock == 0)
-                    {
-                        <p><strong>Quantity in stock: </strong><b>Out of stock</b></p>
-                    }
-                    else
-                    {
-                        <p><strong>Quantity in stock: </strong>@item.quantity_instock </p>
-                    }
-                    <p><img src="@item.image" width="95%" alt="image picture" /></p>
-                    <p>@item.info</p>
-                </div>
+@using (Html.BeginForm("Index", "Food", FormMethod.Get, new { @class = "form-inline", id = "sortForm" }))
+{
+    <div class="container mt-4">
+        <div class="form-group ml-2 border rounded p-3 bg-light" style="margin-top: 20px; margin-bottom: 20px;max-width: 400px;">
+            <label for="sort" class="mr-2">Sorted by:</label>
+            <select id="sort" name="sort" class="form-control">
+                <option value="name_asc" @(ViewBag.SortOrder == "name_asc" ? "selected" : "")>Name (A-Z)</option>
+                <option value="name_desc" @(ViewBag.SortOrder == "name_desc" ? "selected" : "")>Name (Z-A)</option>
+                <option value="price" @(ViewBag.SortOrder == "price" ? "selected" : "")>Price (Low to High)</option>
+                <option value="price_desc" @(ViewBag.SortOrder == "price_desc" ? "selected" : "")>Price (High to Low)</option>
+            </select>
+            <!--<button type="submit" class="btn btn-primary ml-2 animate__animated animate__fadeInUp">Apply</button>-->
+        </div>
+    </div>
+}
 
-                <div class="panel-footer clearfix">
-                    <div class="pull-right">
-                        <a class="btn btn-success" href="@Url.Action("AddCart", "Cart",new { @id = item.food_id, @strURL = Request.Url.ToString()})">Order</a>
+<script>
+    // Add JavaScript to submit the form when the dropdown changes
+    document.getElementById('sort').addEventListener('change', function () {
+        document.getElementById('sortForm').submit();
+    });
+</script>
+
+
+
+<div class="container mt-4">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                <div class="panel panel-default product-card">
+                    <div class="panel-heading">
+                        @item.food_name
+                    </div>
+                    <div class="panel-body">
+                        <p class="product-price"><strong style="color: black">Price: </strong>@string.Format("{0:N0}", item.price)<span> VND</span></p>
+                        @if (item.quantity_instock == 0)
+                        {
+                            <p class="text-danger"><strong>Out of stock</strong></p>
+                        }
+                        else
+                        {
+                            <p><strong>Quantity in stock: </strong>@item.quantity_instock</p>
+                        }
+                        <a href="@Url.Action("Detail", "Food", new { id = item.food_id })" class="image-link">
+                            <div class="image-container">
+                                <img src="@item.image" alt="image picture" />
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="panel-footer clearfix">
+                        <div class="pull-left">
+                            <td><a href="@Url.Action("Comment","Food",new { @id = item.food_id })">Add Rating and Comments</a></td>
+                        </div>
+                        <div class="pull-right">
+                            <a class="btn btn-success" href="@Url.Action("AddCart", "Cart", new { @id = item.food_id, @strURL = Request.Url.ToString() })">Order</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    }
+        }
+    </div>
+</div>
 
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6">
+            @using (Html.BeginForm("Index", "Food", FormMethod.Get, new { @class = "form-inline" }))
+            {
+                <div class="form-group">
+                    @Html.Label("Page Size")
+                    @Html.DropDownList("size", (List<SelectListItem>)ViewBag.size, new
+                    {
+                        @class = "form-control"
+                    })
+                </div>
+            }
+        </div>
+        <div class="col-md-6 text-right">
+            <p class="text-muted">Page: @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)/@Model.PageCount</p>
+        </div>
+    </div>
 </div>
-<div class="col-md-6 col-lg-6 col-xs-6 col-sm-6">
-    @using (Html.BeginForm("Index", "Food", FormMethod.Get))
-    {
-        <p>
-            Size of page:@Html.DropDownList("size", (List<SelectListItem>)ViewBag.size, new
-{
-@onchange = "this.form.submit();"
-})
-        </p>
-    }
-</div>
-<div class="col-md-6 col-lg-6 col-xs-6 col-sm-6 text-right">
-    Page: @(Model.PageCount<Model.PageNumber? 0:Model.PageNumber)/@Model.PageCount
-</div>
-<div>
-    <div class="Menu">
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, size = ViewBag.currentSize }))
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, size = ViewBag.currentSize }))
+                </ul>
+            </nav>
+        </div>
     </div>
 </div>
 
 <style>
-    .Menu li {
-        display: inline;
+    .product-card {
+        border: 1px solid #ddd;
+        transition: box-shadow 0.3s;
     }
 
-    </h3style >
-    <style type="text/css" >
-    #mau-nut a {
-        clear: both;
-        background-color: orange;
-        color: snow;
+        .product-card:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+    .image-container {
+        height: 270px;
+        overflow: hidden;
+        position: relative;
+        border-radius: 10px;
     }
 
-    #mau-nut a:hover {
-        background-color: darkcyan;
-        color: darkcyan;
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1s ease;
+            border-radius: 10px;
+        }
+
+        .image-container:hover img {
+            transform: scale(1.1);
+        }
+
+    .product-price {
+        color: #007bff;
     }
 </style>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script>
-    $(document).ready(function () {
-        var maxLength = 100;
-        $(".show-read-more").each(function () {
-            var myStr = $(this).text();
-            if ($.trim(myStr).length > maxLength) {
-                var newStr = myStr.substring(0, maxLength);
-                var removeStr = myStr.substring(maxLength, $.trim(myStr).length);
-                $(this).empty().html(newStr);
-                $(this).append(' <a href= "javascript:void(0);" class="read-more">read continue...</a>');
-                $(this).append('<span class="more-text">' + removedStr + '</span>');
-            }
-        });
-        $(".read-more").click(function () {
-            $(this).siblings(".more-text").contents().unwrap();
-            $(this).remove();
-        });
-    });
-</script>
-<style>
-    .show-read-more .more-text {
-        display: none;
-    }
-</style>
-

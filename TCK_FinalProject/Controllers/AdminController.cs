@@ -24,7 +24,6 @@ namespace TCK_FinalProject.Controllers
 
 
             List<SelectListItem> items = new List<SelectListItem>();
-            items.Add(new SelectListItem { Text = "3", Value = "3" });
             items.Add(new SelectListItem { Text = "6", Value = "6" });
             items.Add(new SelectListItem { Text = "12", Value = "12" });
             items.Add(new SelectListItem { Text = "24", Value = "24" });
@@ -46,24 +45,25 @@ namespace TCK_FinalProject.Controllers
             {
                 all_book = (IOrderedQueryable<food>)all_book.Where(a => a.food_name.Contains(searchString));
             }
-            int pageSize = (size ?? 3);
+            int pageSize = (size ?? 6);
             int pageNum = page ?? 1;
 
             return View(all_book.ToPagedList(pageNum, pageSize));
         }
 
         
-        public ActionResult StatisticMember(string searchString)
+        public ActionResult StatisticMember(string customerName, string foodName)
         {
             if (Session["Admin"] == null || Session["Admin"].ToString() == "")
             {
                 return RedirectToAction("AdminLogin", "Admin");
             }
-            ViewBag.keyword_cus = searchString;
+            ViewBag.keyword_cus = customerName;
+            ViewBag.keyword_food = foodName;
 
             var statisticData = db.orderdetails
                     .GroupBy(od => new { od.food.food_name, od.order.customer.customer_name, od.price })
-                    .Select(g => new StatisticViewModel
+                    .Select(g => new StatisticMemberview
                     {
                         CustomerName = g.Key.customer_name,
                         FoodName = g.Key.food_name,
@@ -72,11 +72,14 @@ namespace TCK_FinalProject.Controllers
                     })
                  .ToList();
 
-            if (!string.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(customerName))
             {
-                statisticData = statisticData.Where(a => a.CustomerName.Contains(searchString)).ToList();
+                statisticData = statisticData.Where(a => a.CustomerName.Contains(customerName)).ToList();
             }
-
+            if (!string.IsNullOrEmpty(foodName))
+            {
+                statisticData = statisticData.Where(a => a.FoodName.Contains(foodName)).ToList();
+            }
             return View(statisticData);
         }
 
@@ -92,7 +95,7 @@ namespace TCK_FinalProject.Controllers
         {
             var username = collection["admin_username"];
             var password = collection["admin_password"];
-            admin a = db.admins.SingleOrDefault(n => n.admin_username == username && n.admin_password == password);
+            admin a = db.admins.FirstOrDefault(n => n.admin_username == username && n.admin_password == password);
             if (a != null)
             {
                 ViewBag.ThongBao = "Congratulations on successful login";

@@ -1,0 +1,104 @@
+﻿@model IEnumerable<TCK_FinalProject.Models.Cart>
+@{
+    ViewBag.Title = "Place Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Your Cart</h2>
+            <table class="table table-bordered">
+                <!-- Table header -->
+                <tr>
+                    <th>Food Name</th>
+                    <th>Image</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                    <th>Update</th>
+                </tr>
+                <!-- Table body -->
+                @foreach (var item in Model)
+                {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.food_name)</td>
+                <td><img src="@item.image" width="100" /></td>
+                @using (Html.BeginForm("CartUpdate", "Cart", new { @id = item.food_id }))
+                {
+                    <td>@string.Format("{0:N0}", item.price)<span> VND</span></td>
+                    <td>
+                        <input type="number" min="1" name="txtSoLg" value="@item.iquantity" class="form-control" />
+                    </td>
+                    <td>@string.Format("{0:N0}", item.Total)<span> VND</span></td>
+                    <td>
+
+                        @Html.ActionLink("Delete", "CartDelete", new { @id = item.food_id }, new { @class = "btn btn-danger btn-sm" })
+                    </td>
+                    <td>
+                        <input type="submit" value="Update" class="btn btn-success btn-sm" />
+                    </td>
+                    <td>@Html.ActionLink("Detail", "Detail", "Food", new { @id = item.food_id }, new { @class = "btn btn-info btn-sm" })</td>
+                }
+            </tr>
+                }
+                <!-- Summary rows -->
+                <tr style="font-weight:bold; text-align:left; color:red">
+                    <td colspan="2">Quantity Sum: @ViewBag.sumProductQuantity</td>
+                    <td colspan="2">Quantity Total: @ViewBag.sumQuantity</td>
+                    <td colspan="3">Total: @String.Format("{0:N0}", @ViewBag.Total)<span> VND</span></td>
+                </tr>
+                <tr style="font-weight:bold; color:blue; text-align:right">
+                    <td colspan="7">
+                        @Html.ActionLink("Cart Delete", "AllCartDelete", null, new { @class = "btn btn-warning" })
+                    </td>
+                </tr>
+                <tr style="font-weight:bold; color:yellow; text-align:right">
+                    <td colspan="7">
+                        @Html.ActionLink("Back to Cart", "Cart", "Cart", null, new { @class = "btn btn-primary" })
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        @using TCK_FinalProject.Models
+        @{
+            var kh = (customer)Session["User"];
+        }
+        <div class="col-md-6">
+            <h2 style="text-align:center">Information for Place an Order</h2>
+            @using (Html.BeginForm())
+            {
+                @Html.ValidationSummary(true)
+                <div class="form-group">
+                    <label>Customer Name:</label>
+                    <strong>@kh.customer_name</strong>
+                </div>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <strong>@kh.email</strong>
+                </div>
+                <div class="form-group">
+                    <label>Address:</label>
+                    <strong>@kh.address</strong>
+                </div>
+                <div class="form-group">
+                    <label>Number Phone:</label>
+                    <strong>@kh.numberphone</strong>
+                </div>
+                <div class="form-group">
+                    <label>Order Date:</label>
+                    <strong>@DateTime.Now.ToShortDateString()</strong>
+                </div>
+                <div class="form-group">
+                    <label>Delivery Date:</label>
+                    <input type="date" name="delivery_date" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Confirm" class="btn btn-success" />
+                </div>
+            }
+        </div>
+    </div>
+</div>

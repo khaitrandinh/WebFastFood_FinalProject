@@ -128,16 +128,25 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\FoodController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Cart.cs" />
+    <Compile Include="Models\Common.cs" />
     <Compile Include="Models\dbfinalProject_ASP.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>dbfinalProject_ASP.dbml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\OrderDetail.cs" />
+    <Compile Include="Models\OrderDetailViewModel.cs" />
+    <Compile Include="Models\OrderItem.cs" />
+    <Compile Include="Models\StatisticMemberview.cs" />
     <Compile Include="Models\StatisticViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -148,6 +157,8 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\images\logo\logo.png" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\templates\send1.html" />
+    <Content Include="Content\templates\send2.html" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -162,6 +173,8 @@
     <None Include="Models\dbfinalProject_ASP.dbml.layout">
       <DependentUpon>dbfinalProject_ASP.dbml</DependentUpon>
     </None>
+    <None Include="Properties\PublishProfiles\nguyenhuuthang-001-site1 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\nguyenhuuthang-001-site1 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -196,9 +209,23 @@
     <Content Include="Views\Admin\AdminLogout.cshtml" />
     <Content Include="Views\Admin\Create.cshtml" />
     <Content Include="Views\Admin\Edit.cshtml" />
+    <Content Include="Views\Cart\Cart.cshtml" />
+    <Content Include="Views\Cart\CartPartial.cshtml" />
+    <Content Include="Views\Cart\ConfirmOrder.cshtml" />
+    <Content Include="Views\Cart\PlaceOrder.cshtml" />
+    <Content Include="Views\Admin\Delete.cshtml" />
+    <Content Include="Views\Order\Orders.cshtml" />
+    <Content Include="Views\Food\Detail.cshtml" />
+    <Content Include="Views\Order\OrderDetail.cshtml" />
+    <Content Include="Views\Food\Statistic.cshtml" />
+    <Content Include="Views\Admin\StatisticMember.cshtml" />
+    <Content Include="Views\Order\OrdersAll.cshtml" />
+    <Content Include="Views\Order\ODetail.cshtml" />
+    <Content Include="Views\Food\Comment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\CSS\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

@@ -1,0 +1,50 @@
+﻿@model IEnumerable<TCK_FinalProject.Models.Order>
+@{
+    ViewBag.Title = "Orders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Order</h2>
+@using (Html.BeginForm("Orders", "Order", FormMethod.Get, new { @class = "form-inline" }))
+{
+    <div class="btn-group" style="display: flex; top: -5px">
+        <input type="text" class="form-control col-md-10" value="@ViewBag.idorder" name="idorder" placeholder="Enter ID Order..." />
+        <input type="submit" class="btn btn-info" value="Search" />
+    </div>
+}
+<table class="table">
+    <tr>
+        <th>#</th>
+        <th>Order ID</th>
+        <th>Customer Name</th>
+        <th>Order Date</th>
+        <th>Delivery Date</th>
+        <th>Is Ship</th>
+        <th>Is Payment</th>
+        <th>Total</th>
+        <th></th>
+    </tr>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            var i = 1;
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@i</td>
+                    <td>@item.orderID</td>
+                    <td>@item.customerName</td>
+                    <td>@item.orderDate</td>
+                    <td>@item.deliveryDate</td>
+                    <td>@(item.isShip == true? "True" : "False")</td>
+                    <td>@(item.isPayment ? "True" : "False")</td>
+                    <td>@string.Format("{0:N0}", item.total)<span> VND</span></td>
+                    <td>
+                        @Html.ActionLink("Detail", "ODetail", "Order", new { id = item.orderID }, new { @class = "btn btn-default" })
+                    </td>
+                </tr>
+                i++;
+            }
+        }
+    </tbody>
+</table>

@@ -1,17 +1,17 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - TCK TEAM</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -20,19 +20,26 @@
                     <img src="~/Content/Images/logo/logo.png" alt="Logo" class="logo-image" height="45px" width="45px" style="position:relative ;top: -10px" />
                 </a>
             </div>
-            <div class="navbar-collapse collapse">
+            <!--
+            Cấu trúc thanh điều hướng : Được sử dụng navbar-formvà navbar-rightcác lớp để căn chỉnh biểu mẫu tìm kiếm tốt hơn.
+            Nhóm đầu vào cho tìm kiếm : Bao bọc đầu vào và nút tìm kiếm trong một nhóm đầu vào để có giao diện rõ ràng hơn.
+            Responsive Collapse : Cải thiện khả năng phản hồi bằng cách thêm navbar-togglevà data-targetthuộc tính.
+            Kiểu dáng nhất quán : Áp dụng kiểu dáng nhất quán cho các biểu mẫu và nút. Hãy thoải mái tùy chỉnh thêm kiểu dáng dựa trên sở thích thiết kế của bạn.
+            -->
+            <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Food")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    
+                    <li>@Html.Partial("~/Views/Cart/CartPartial.cshtml")</li>
                     @{
                         string nav = ViewContext.RouteData.Values["controller"] as string;
-                        // Lấy tên của controller từ RouteData. Trong MVC, RouteData là dữ liệu liên quan đến đường dẫn của yêu cầu hiện tại,
-                        // và "controller" là một trong các giá trị có thể xuất hiện trong RouteData.
                     }
                     @if (Session["Admin"] != null && nav.Equals("Admin", StringComparison.OrdinalIgnoreCase))
                     {
                         <li>@Html.ActionLink("Statistic-Mem", "StatisticMember", "Admin")</li>
+                        <li>@Html.ActionLink("Order-his-mem", "OrdersAll", "Order")</li>
                         <li>@Html.ActionLink("Logout", "AdminLogout", "Admin")</li>
                     }
                     else
@@ -40,6 +47,7 @@
                         if (Session["User"] != null)
                         {
                             <li>@Html.ActionLink("Statistic", "Statistic", "Food")</li>
+                            <li>@Html.ActionLink("Order_history", "Orders", "Order")</li>
                             <li>@Html.ActionLink("Logout", "Logout", "User")</li>
                         }
                         else
@@ -49,41 +57,41 @@
                         }
                     }
                 </ul>
-                @{
-                    string admin = ViewContext.RouteData.Values["controller"] as string;
-                    // Lấy tên của controller từ RouteData. Trong MVC, RouteData là dữ liệu liên quan đến đường dẫn của yêu cầu hiện tại,
-                    // và "controller" là một trong các giá trị có thể xuất hiện trong RouteData.
-                }
-                @if (Session["Admin"] != null && admin.Equals("Admin", StringComparison.OrdinalIgnoreCase))
-                {
-                    // Kiểm tra xem người dùng hiện tại có phải là Admin hay không.
-                    // Nếu có, và đang ở trang quản trị (Admin controller), thì sẽ hiển thị biểu mẫu tìm kiếm cho Admin.
-                    using (Html.BeginForm("AdminDashboard", "Admin", FormMethod.Get, new { @class = "form-inline" }))
-                    {
-                        // Bắt đầu một form HTML sử dụng helper Html.BeginForm trong Razor. Form này sẽ gửi dữ liệu đến hành động "AdminDashboard" trong controller "Admin",
-                        // và sử dụng phương thức GET. Form này có class là "form-inline" để tạo một giao diện ngang
-                        <div class="btn-group" style="display: flex; left:10%; top: 10px">
-                            <input type="text" class="form-control col-md-10" value="@ViewBag.keyword" name="searchString" placeholder="Enter food name...." />
-                            <input type="submit" class="btn btn-info" value="Search" />
-                        </div>
-                        // search của admin
+
+                <!--Add div để điều chỉnh search cân đối-->
+                <div class="navbar-form navbar-right">
+                    @{
+                        string admin = ViewContext.RouteData.Values["controller"] as string;
                     }
-                }
-                // (tk user chưa hoặc đã đăng nhập) và ko ở trang admin
-                else if ((Session["User"] != null || Session["User"] == null) && !admin.Equals("Admin", StringComparison.OrdinalIgnoreCase))
-                {
-                    using (Html.BeginForm("Index", "Food", FormMethod.Get, new { @class = "form-inline" }))
+                    @if (Session["Admin"] != null && admin.Equals("Admin", StringComparison.OrdinalIgnoreCase))
                     {
-                        <div class="btn-group" style="display: flex; left:10%; top: 10px">
-                            <input type="text" class="form-control col-md-10" value="@ViewBag.keyword" name="searchString" placeholder="Enter food name..." />
-                            <input type="submit" class="btn btn-info" value="Search" />
-                        </div>
-                        // search của khách hàng
+                        using (Html.BeginForm("AdminDashboard", "Admin", FormMethod.Get, new { @class = "form-inline" }))
+                        {
+                            <div class="input-group">
+                                <input type="text" class="form-control" value="@ViewBag.keyword" name="searchString" placeholder="Search food name..." />
+                                <span class="input-group-btn">
+                                    <input type="submit" class="btn btn-info" value="Search" />
+                                </span>
+                            </div>
+                        }
                     }
-                }
+                    else if ((Session["User"] != null || Session["User"] == null) && !admin.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+                    {
+                        using (Html.BeginForm("Index", "Food", FormMethod.Get, new { @class = "form-inline" }))
+                        {
+                            <div class="input-group">
+                                <input type="text" class="form-control" value="@ViewBag.keyword" name="searchString" placeholder="Search food name..." />
+                                <span class="input-group-btn">
+                                    <input type="submit" class="btn btn-info" value="Search" />
+                                </span>
+                            </div>
+                        }
+                    }
+                </div>
             </div>
         </div>
-    </div>
+    </nav>
+
     <div class="container body-content">
         @RenderBody()
         <hr />

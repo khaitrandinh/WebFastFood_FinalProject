@@ -1,0 +1,54 @@
+﻿@model TCK_FinalProject.Models.review
+@{
+    ViewBag.Title = "Comment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<head>
+    <meta name="viewport" content="width = device-width" />
+    <title>Comments</title>
+    <link href="~/Content/CSS/jquery.rateyo.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Content/CSS/jquery.min.js"></script>
+    <script src="~/Content/CSS/jquery.rateyo.min.js"></script>
+    <script>
+        $(function () {
+            $("#rateYo").rateYo({
+                rating: 0,
+                numStars: 5,
+                maxValue: 5,
+                halfStar: true,
+                onchange: function (rating, rateYoInstance) {
+                    $('#rating').val(rating);
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <h2>Comment</h2>
+    @using (Html.BeginForm("SendReview", "Food", FormMethod.Post))
+    {
+<table cellpadding="2" cellspacing="2">
+    <tr>
+        <td valign="top">Rating </td>
+        <td>
+            <div id="rateYo"></div>
+            <input type="hidden" id="rating" />
+            
+        </td>
+    </tr>
+
+    <tr>
+        <td valign="top">Content </td>
+        <td>@Html.TextAreaFor(model => model.comment, new { cols = 40, rows = 5 })</td>
+    </tr>
+
+    <tr>
+        <td>&nbsp;</td>
+        <td><input type="Submit" value="Send" /></td>
+    </tr>
+</table>
+    }
+</body>

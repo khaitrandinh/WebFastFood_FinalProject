@@ -10,6 +10,10 @@ namespace TCK_FinalProject.Controllers
     public class UserController : Controller
     {
         dbfinalProject_ASPDataContext db = new dbfinalProject_ASPDataContext();
+
+        /*(?=.*[A-Z]): At least one uppercase letter.
+        (?=.*\d): At least one digit.
+        (?=.*\W): At least one special character (non-alphanumeric).*/
         [HttpGet]
         public ActionResult Register()
         {
@@ -39,6 +43,38 @@ namespace TCK_FinalProject.Controllers
                 }
                 else
                 {
+                    // Validate password complexity
+                    if (!IsPasswordValid(password))
+                    {
+                        ViewData["passwordComplexity"] = "Password must contain at least one uppercase letter, one digit, and one special character.";
+                        return View();
+                    }
+
+                    // Check if username already exists
+                    var existingUsername = db.customers.FirstOrDefault(x => x.username == username);
+                    if (existingUsername != null)
+                    {
+                        ViewData["usernameExists"] = "Username already exists. Please choose a different username.";
+                        return View();
+                    }
+
+                    // Check if email already exists
+                    var existingEmail = db.customers.FirstOrDefault(x => x.email == email);
+                    if (existingEmail != null)
+                    {
+                        ViewData["emailExists"] = "Email already exists. Please use a different email.";
+                        return View();
+                    }
+
+                    // Check if phone number already exists
+                    var existingPhoneNumber = db.customers.FirstOrDefault(x => x.numberphone == numberphone);
+                    if (existingPhoneNumber != null)
+                    {
+                        ViewData["phoneNumberExists"] = "Phone number already exists. Please use a different phone number.";
+                        return View();
+                    }
+
+                    // Continue with the rest of your registration logic...
                     c.customer_name = name;
                     c.username = username;
                     c.password = password;
@@ -46,12 +82,19 @@ namespace TCK_FinalProject.Controllers
                     c.address = address;
                     c.numberphone = numberphone;
                     c.dob = DateTime.Parse(dob);
+
                     db.customers.InsertOnSubmit(c);
                     db.SubmitChanges();
                     return RedirectToAction("Register");
                 }
             }
-            return this.Register();
+
+            return View();
+        }
+        private bool IsPasswordValid(string password)
+        {
+            // Password must contain at least one uppercase letter, one digit, and one special character
+            return System.Text.RegularExpressions.Regex.IsMatch(password, @"^(?=.*[A-Z])(?=.*\d)(?=.*\W).*$");
         }
 
 
@@ -65,12 +108,13 @@ namespace TCK_FinalProject.Controllers
         {
             var username = collection["username"];
             var password = collection["password"];
-            customer c = db.customers.SingleOrDefault(n => n.username == username && n.password == password);
+
+            customer c = db.customers.FirstOrDefault(n => n.username == username && n.password == password);
             if (c != null)
             {
                 ViewBag.ThongBao = "Congratulations on successful login";
                 Session["User"] = c;
-                return RedirectToAction("Home", "Book");
+                return RedirectToAction("Index", "Food");
             }
             else
             {
