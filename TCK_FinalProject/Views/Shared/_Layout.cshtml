@@ -28,9 +28,7 @@
             -->
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Food")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Home", "Index", "Food")</li>                   
                     
                     <li>@Html.Partial("~/Views/Cart/CartPartial.cshtml")</li>
                     @{
@@ -68,9 +66,11 @@
                         using (Html.BeginForm("AdminDashboard", "Admin", FormMethod.Get, new { @class = "form-inline" }))
                         {
                             <div class="input-group">
-                                <input type="text" class="form-control" value="@ViewBag.keyword" name="searchString" placeholder="Search food name..." />
+                                <input type="text" class="form-control" value="@ViewBag.keywords" name="searchString" placeholder="Search food name..." />
                                 <span class="input-group-btn">
-                                    <input type="submit" class="btn btn-info" value="Search" />
+                                    <button type="submit" class="btn btn-info">
+                                        <span class="glyphicon glyphicon-search"></span> Search
+                                    </button>
                                 </span>
                             </div>
                         }
@@ -82,7 +82,9 @@
                             <div class="input-group">
                                 <input type="text" class="form-control" value="@ViewBag.keyword" name="searchString" placeholder="Search food name..." />
                                 <span class="input-group-btn">
-                                    <input type="submit" class="btn btn-info" value="Search" />
+                                    <button type="submit" class="btn btn-info"  >
+                                        <span class="glyphicon glyphicon-search"></span> Search 
+                                    </button>
                                 </span>
                             </div>
                         }

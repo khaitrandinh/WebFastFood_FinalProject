@@ -146,6 +146,7 @@
     <Compile Include="Models\OrderDetail.cs" />
     <Compile Include="Models\OrderDetailViewModel.cs" />
     <Compile Include="Models\OrderItem.cs" />
+    <Compile Include="Models\Review.cs" />
     <Compile Include="Models\StatisticMemberview.cs" />
     <Compile Include="Models\StatisticViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -155,6 +156,9 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\JS\jquery.min.js" />
+    <Content Include="Content\CSS\jquery.rateyo.min.css" />
+    <Content Include="Content\JS\jquery.rateyo.min.js" />
     <Content Include="Content\images\logo\logo.png" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\templates\send1.html" />
@@ -225,7 +229,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\CSS\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

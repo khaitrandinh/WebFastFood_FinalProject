@@ -1,54 +1,96 @@
 ﻿@model TCK_FinalProject.Models.review
 @{
     ViewBag.Title = "Comment";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!DOCTYPE html>
+<html>
 <head>
     <meta name="viewport" content="width = device-width" />
-    <title>Comments</title>
-    <link href="~/Content/CSS/jquery.rateyo.min.css" rel="stylesheet" type="text/css" />
-    <script src="~/Content/CSS/jquery.min.js"></script>
-    <script src="~/Content/CSS/jquery.rateyo.min.js"></script>
-    <script>
-        $(function () {
-            $("#rateYo").rateYo({
-                rating: 0,
-                numStars: 5,
-                maxValue: 5,
-                halfStar: true,
-                onchange: function (rating, rateYoInstance) {
-                    $('#rating').val(rating);
-                }
-            });
-        });
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://kit.fontawesome.com/4567594ef7.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        function CrateOut(rating) {
+            for (var i = 1; i <= rating; i++) {
+                $("#span" + i).attr('class', 'glyphicon glyphicon-star-empty');
+            }
+        }
+        function CrateOver(rating) {
+            for (var i = 1; i <= rating; i++) {
+                $("#span" + i).attr('class', 'glyphicon glyphicon-star');
+            }
+        }
+        function CrateClick(rating) {
+            $("#lblRating").val(rating);
+            for (var i = 1; i <= rating; i++) {
+                $("#span" + i).attr('class', 'glyphicon glyphicon-star');
+            }
+            for (var i = rating + 1; i <= 5; i++) {
+                $("#span" + i).attr('class', 'glyphicon glyphicon-star-empty');
+            }
+        }
+        function CrateSelected() {
+            var rating = $("#lblRating").val();
+            for (var i = 1; i <= rating; i++) {
+                $("#span" + i).attr('class', 'glyphicon glyphicon-star');
+            }
+        }
+     
     </script>
 </head>
-
 <body>
-    <h2>Comment</h2>
-    @using (Html.BeginForm("SendReview", "Food", FormMethod.Post))
-    {
-<table cellpadding="2" cellspacing="2">
-    <tr>
-        <td valign="top">Rating </td>
-        <td>
-            <div id="rateYo"></div>
-            <input type="hidden" id="rating" />
-            
-        </td>
-    </tr>
+  <h2>Comment</h2>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card mt-4">
+@*
+                <table border="1" cellpadding="2" cellspacing="2">
+          @foreach(var review in @ViewBag.food)         
+          {
+                <tr>
+                    <td>
+                        @review.customer.customer_name
+                        <br />
+                        @review.rating
+                        <br />
+                        @review.comment
+                    </td>
+                </tr>
+          }
+               
+        </table>*@
+                @using (Html.BeginForm("SendReview", "Food", FormMethod.Post))
+                {
+                    <div class=" form-group">
+                        <label>Write your Comment</label>
+                        <div onmouseout="CrateSelected()">
+                            <span id="span1" onmouseout="CrateOut(1)" onmouseover="CrateOver(1)" onclick="CrateClick(1)" class="glyphicon glyphicon-star-empty " ></span>
+                            <span id="span2" onmouseout="CrateOut(2)" onmouseover="CrateOver(2)" onclick="CrateClick(2)" class="glyphicon glyphicon-star-empty " ></span>
+                            <span id="span3" onmouseout="CrateOut(3)" onmouseover="CrateOver(3)" onclick="CrateClick(3)" class="glyphicon glyphicon-star-empty " ></span>
+                            <span id="span4" onmouseout="CrateOut(4)" onmouseover="CrateOver(4)" onclick="CrateClick(4)" class="glyphicon glyphicon-star-empty " ></span>
+                            <span id="span5" onmouseout="CrateOut(5)" onmouseover="CrateOver(5)" onclick="CrateClick(5)" class="glyphicon glyphicon-star-empty " ></span>
+                        </div>
+                        <input type="hidden" id="lblRating" name="rating" />
+                        
+                            <p valign="top">Content </p>
+                            @Html.TextAreaFor(item => item.comment, new { cols= 40, rows= 5, placeholder = "Write your comment here." })
 
-    <tr>
-        <td valign="top">Content </td>
-        <td>@Html.TextAreaFor(model => model.comment, new { cols = 40, rows = 5 })</td>
-    </tr>
+                            <p>&nbsp;</p>
+                            <p>
+                                <input type="Submit" value="Send" />
+                                @Html.HiddenFor(item => item.food_id)
+                            </p>
 
-    <tr>
-        <td>&nbsp;</td>
-        <td><input type="Submit" value="Send" /></td>
-    </tr>
-</table>
-    }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 </body>
+</html>
+<style type="text/css">
+    .glyphicon{
+        font-size: 40px;
+        color: yellow;
+    }
+</style>

@@ -45,7 +45,7 @@
                         @item.food_name
                     </div>
                     <div class="panel-body">
-                        <p class="product-price"><strong style="color: black">Price: </strong>@string.Format("{0:N0}", item.price)<span> VND</span></p>
+                        <p class="product-price"><strong style="color: black">Price: </strong>@string.Format("{0:N0}", item.price)<span>.000 VND</span></p>
                         @if (item.quantity_instock == 0)
                         {
                             <p class="text-danger"><strong>Out of stock</strong></p>

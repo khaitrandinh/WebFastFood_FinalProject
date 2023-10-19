@@ -34,7 +34,7 @@ namespace TCK_FinalProject.Controllers
                     item.Selected = true;
             }
 
-            ViewBag.keyword = searchString;
+            ViewBag.keywords = searchString;
 
             ViewBag.size = items; // viewbag dropdown list
             ViewBag.currentSize = size;

@@ -33,7 +33,10 @@ namespace TCK_FinalProject.Controllers
             ViewBag.currentSize = size;
 
             var all_book = db.foods.AsQueryable();
-
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                all_book = (IOrderedQueryable<food>)all_book.Where(a => a.food_name.Contains(searchString));
+            }
             switch (sort)
             {
                 case "name_desc":
@@ -50,7 +53,7 @@ namespace TCK_FinalProject.Controllers
                     sort = "name_asc"; // Ensure default value is set
                     break;
             }
-
+           
             int pageSize = (size ?? 6);
             int pageNum = page ?? 1;
 
@@ -101,8 +104,13 @@ namespace TCK_FinalProject.Controllers
             customer currentUser = Session["User"] as customer;
             if (currentUser != null)
             {
-                ViewBag.Food = db.foods.First(a => a.food_id == id);
-                return View("Comment");
+                var Food = db.foods.Where(a => a.food_id == id);
+                ViewBag.food = Food;
+                var review = new review()
+                {
+                    food_id = Food.First().food_id
+                };
+                return View("Comment", review);
             }
             else
             {
@@ -114,13 +122,13 @@ namespace TCK_FinalProject.Controllers
         [HttpPost]
         public ActionResult SendReview(review review, double rating)
         {
-            customer username = Session["username"] as customer;
+            var username = db.customers.First().username;
             review.review_date = DateTime.Now;
-            review.customer_id = db.customers.First(a => a.username.Equals(username)).customer_id;
+            review.customer_id = db.customers.FirstOrDefault(a => a.username.Equals(username))?.customer_id;
             review.rating = rating;
             db.reviews.InsertOnSubmit(review);
             db.SubmitChanges();
-            return RedirectToAction("Comment", "Food",new {id = review.food_id });
+            return RedirectToAction("Comment", "Food", new { id = review.food_id});
         }
     }
 }
